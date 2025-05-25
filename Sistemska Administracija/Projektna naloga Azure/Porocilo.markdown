@@ -203,7 +203,37 @@ Ko se je prijavila, je videla, da ima:
 
 ## 3. Vzpostavitev Linux navidezne naprave
 
-*dopolni*
+Po ustvarjanju računa smo ustvarili nov **Linux virtualni stroj**.
+
+Najprej smo si ogledali vse storitve, ki jih ponuja Azure:  
+![Storitev Azure](AzureStoritve.png) 
+
+Nato smo izbrali možnost **Linux Virtual Machine**.  
+Prikazal se je obrazec, kjer smo za naš projekt ustvarili novo skupino z imenom **TriWaveGroup**.
+Virtualni stroj smo poimenovali **TriWaveVM**.  
+Kot regijo smo izbrali **West Europe**, in kot distribucijo **Ubuntu**.
+
+![Nastavitve VM1](NastavitveVM1.png)
+
+Kot velikost smo izbrali **Standard B1s**.  
+Kot vrsto preverjanja pristnosti smo izbrali **password**.
+
+![Nastavitve VM2](NastavitveVM2.png)
+
+Vnesela sem **uporabniško ime** in **geslo** za račun, prek katerega bomo vsi lahko dostopali do stroja.
+Za javna vhodna vrata smo izbrali **SSH (port 22)**.
+
+![Nastavitve VM3](NastavitveVM3.png)
+
+Ko smo ustvarili virtualni stroj, se je ta skupaj z našo skupino prikazal na **domači strani** našega uporabniškega računa.
+
+![Domača stran Azure](VMGrupa.png) 
+
+- **Dokazilo**: Uspešno ustvarjen virtualni stroj, specifikacije in SSH dostop do stroja so prikazani na zaslonskih posnetkih.    
+     ![Specifikacije 1](Specifikacije1.png)
+     ![Specifikacije 2](Specifikacije2.png)
+     ![Dostop do stroja](SkupniDostopDoMasine.png)
+
 
 ---
 
@@ -217,7 +247,7 @@ Port forwarding v Azure portalu omogočimo z dodajanjem vhodnega varnostnega pra
 
 **Koraki**:
 1. Prijava v Azure portal na `https://portal.azure.com`.
-2. Poiskali smo **Virtual machines** in izbrali VM (npr. `TriWave-VM`).
+2. Poiskali smo **Virtual machines** in izbrali VM (npr. `TriWaveVM`).
 3. V meniju smo izbrali **Networking** > **Network Security Group**.
 4. V NSG smo izbrali **Inbound security rules** in kliknili **+ Add**.
 5. Nastavili smo pravilo:
@@ -225,13 +255,13 @@ Port forwarding v Azure portalu omogočimo z dodajanjem vhodnega varnostnega pra
    - **Destination port ranges**: 3000
    - **Protocol**: TCP
    - **Action**: Allow
-   - **Priority**: 100
-   - **Name**: `Allow-Frontend-3000`
+   - **Priority**: 200
+   - **Name**: `AllowFrontend3000`
 6. Kliknili smo **Add**.
 
 **Rezultat**: Port 3000 je odprt za dostop do frontend aplikacije.
 
-![Vhodno pravilo za port 3000](screenshots/port_forwarding.png)
+![Vhodno pravilo za port 3000](InboundPort3000.png)
 
 ### 4.2 Kakšen tip diska je bil dodan vaši navidezni napravi in kakšna je njegova kapaciteta?
 
@@ -242,22 +272,23 @@ Tip diska in kapaciteta VM-ja se preverita v Azure portalu pod nastavitvami disk
 2. Izbrali smo **Disks** pod **Settings**.
 3. Preverili smo **OS disk** za vrsto in kapaciteto.
 
-**Rezultat**: VM (`TriWave-VM`) uporablja **Standard SSD** disk za operacijski sistem s kapaciteto 128 GiB. Ni dodatnih podatkovnih diskov.
+**Rezultat**: VM (`TriWaveVM`) uporablja **Premium SSD LRS** disk za operacijski sistem s kapaciteto 64 GiB in Max IOPS je 240.
 
-![Tip in kapaciteta diska](screenshots/vm_disk.png)
+![Tip in kapaciteta diska](disk.png)
 
 ### 4.3 Kje preverimo stanje trenutne porabe virov v naši naročnini ("Azure for Students")?
 
 Stanje porabe virov v naročnini Azure for Students preverimo pod **Subscriptions** v Azure portalu. Poraba je vidna 24 ur po vzpostavitvi.
 
 **Koraki**:
-1. V iskalno vrstico smo vnesli **Subscriptions** in izbrali **Azure for Students**.
-2. Izbrali smo **Usage + quotas** pod **Settings**.
-3. Izbrali smo vire (npr. Compute) in regijo (npr. West Europe) za prikaz tabele porabe.
+V iskalno vrstico smo vnesli **Subscriptions**.
 
-**Rezultat**: Tabela prikazuje trenutno porabo (npr. 1 VM, 128 GiB diska) in omejitve naročnine.
+![Poraba virov](PorabaAFS.png)
 
-![Poraba virov](screenshots/resource_usage.png)
+Potem smo izbrali **Azure for Students** in dobili vec grafično predstavljenih podatkov.
+![Poraba virov](Poraba1.png)
+![Poraba virov](Poraba2.png)
+![Poraba virov](Poraba3.png)
 
 ---
 
