@@ -232,6 +232,7 @@ Ko smo ustvarili virtualni stroj, se je ta skupaj z našo skupino prikazal na **
 - **Dokazilo**: Uspešno ustvarjen virtualni stroj, specifikacije in SSH dostop do stroja so prikazani na zaslonskih posnetkih.    
      ![Specifikacije 1](Specifikacije1.png)
      ![Specifikacije 2](Specifikacije2.png)
+     Dostop do stroja se naredi s pomočjo ukaza `ssh user@IP_VM`. Pri nas je to `ssh triwave@104.40.152.85`
      ![Dostop do stroja](SkupniDostopDoMasine.png)
 
 
@@ -294,10 +295,81 @@ Potem smo izbrali **Azure for Students** in dobili vec grafično predstavljenih 
 
 ## 5. Vzpostavitev Docker aplikacije na navidezni napravi
 
-*To bodo dopolnili člani skupine.*
+Po vzpostavi Dockerja smo otrebne datoteke smo naložili na **GitHub**.  
+Z virtualnim strojem smo se povezali prek **SSH**.
+ Dostop do stroja se naredi s pomočjo ukaza
+ ``` bash
+ ssh user@IP_VM
+ ```
+Pri nas je to `ssh triwave@104.40.152.85`
+
+![SSH povezava](SkupniDostopDoMasine.png)
+
+---
+
+Na virtualnem stroju smo najprej **namestili Docker**. To smo naredili s pomočjo ukaza 
+```bash
+sudo apt update
+sudo apt install -y docker.io
+```
+
+![Namestitev Dockerja](NamestitevDockerja.png)
+
+---
+
+Potem smo lonirali repozitorij iz GitHuba. To smo naredili s pomočjo ukaza 
+```bash
+git clone -b branch github_url
+```
+
+![Kloniranje repozitorija](KloniranjeRepo.png)
+
+---
+
+Potem smo namestili tudi **Docker Compose**. Docker Compose se uporablja za določanje in zagon več Docker kontejnerjev kot ene same aplikacije. Omogoča, da vse te kontejnerje opišemo v eni sami YAML datoteki z imenom `docker-compose.yml`. Zatem lahko vse zageneš z enim ukazom. 
+Za nameščanje smo uporabili ukaz 
+```bash
+sudo apt install docker-compose
+```
+
+![Namestitev Docker Compose](NamestitevDockerCompose.png)
+
+---
+
+Uporabniku smo morali dati pravice za zagon Dockerja.  
+To smo naredili z naslednjim ukazom:
+
+```bash
+sudo usermod -aG docker $USER
+```
+Nato smo znova zagnali virtualni stroj, da se je sprememba shranila.
+
+![Nastavljanje pravica](PraviceUserja.png)
+
+---
+
+Nato smo začeli z zagananjem Dockerja s pomočjo ukaza 
+```bash
+docker-compose up -d
+```
+![Nalaganje Dockerja](NalaganjeDockerja.png)
+
+Nalaganje je trajalo več kot 10 minut in na koncu smo prejeli potrditev, da je bilo vse naloženo.
+
+![Potrditev nalaganja](PotrditevNalaganja.png)
+
+To smo preverili tudi z ukazom `docker ps` in prikazal je seznam trenutno delujočih kontejnerjev.
+
+![Izpis ukaza docker ps](DockerPS.png)
+
+---
+
+Poskušali smo dostopati do našega strežnika z brskalnikom in naša spletna stran se je uspešno naložila.
+
+![Spletna stran](Brskalnik.png)
 
 ---
 
 ## Zaključek
 
-Vzpostavitev aplikacije v Docker okolju je bila zahtevna, predvsem zaradi težav s konfiguracijo okolja (WSL, Docker cache, napačni API URL-ji), ki sta zahtevali poglobljeno razumevanje React strukture in Docker gradnje. S pomočjo sistematičnega odpravljanja težav (popravki, čiščenje predpomnilnika) smo uspešno namestili aplikacijo, ki deluje z MongoDB Atlas. Delo z Dockerjem nas je naučilo, kako strukturirati aplikacijo v ločene storitve in kako jih povezati s pomočjo docker-compose. Raziskava Azure portala pa je razširila naše znanje o upravljanju virov v oblačnem okolju, kar bo koristno za prihodnje projekte in implementacijo v produkcijo.
+Vzpostavitev aplikacije v Docker okolju je bila zahtevna, predvsem zaradi težav s konfiguracijo okolja (WSL, Docker cache, napačni API URL-ji), ki sta zahtevali poglobljeno razumevanje React strukture in Docker gradnje. S pomočjo sistematičnega odpravljanja težav (popravki, čiščenje predpomnilnika) smo uspešno namestili aplikacijo, ki deluje z MongoDB Atlas. Delo z Dockerjem nas je naučilo, kako strukturirati aplikacijo v ločene storitve in kako jih povezati s pomočjo docker-compose. Raziskava Azure portala pa je razširila naše znanje o upravljanju virov v oblačnem okolju, kar bo koristno za prihodnje projekte in implementacijo v produkcijo.  
