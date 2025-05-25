@@ -182,7 +182,22 @@ Med namestitvijo smo naleteli na več izzivov, ki so zahtevali poglobljeno razum
 
 ## 2. Ustvarjanje brezplačnega Azure računa
 
-*dopolni*
+Vodja naše skupine (**Anđela**) je ustvarila račun v storitvi [Microsoft Azure](https://azure.microsoft.com/en-us/free/students/).
+    
+![Začetna stran](zacetnaStran.png)
+
+Tam je izbrala možnost **"Začni brezplačno"** in vnesla svoje podatke.  
+Svojo identiteto je potrdila tudi z vnosom **telefonske številke** in **prejemom kode za prijavo**.
+
+Ko se je prijavila, je videla, da ima:
+
+- 🕒 **365 dni brezplačnih storitev**
+- 💶 **88 evrov dobroimetja**
+
+![Education Overview](EducationOverview.png)
+
+- **Dokazilo**: Uspešno ustvarjen študentski račun je prikazan na zaslonskem posnetku.    
+     ![Uspešno ustvarjne študentski račun](azureForStudents.png)
 
 ---
 
