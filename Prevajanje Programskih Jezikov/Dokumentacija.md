@@ -3,44 +3,40 @@
 **Ime skupine:** TriWave  
 **Člani:** Anđela Radaković, Aleksandra Mickoska, David Novak
 
----
-
 ## Kazalo
 
 1. [Uvod](#uvod)
-2. [Konstrukti jezika](#konstrukti-jezika)
-   - 2.1. [Osnovni konstrukti](#osnovni-konstrukti)
-     - 2.1.1. [Enota](#enota)
-     - 2.1.2. [Realna števila](#realna-števila)
-     - 2.1.3. [Nizi](#nizi)
-     - 2.1.4. [Koordinate](#koordinate)
-     - 2.1.5. [Bloki](#bloki)
-     - 2.1.6. [Ukazi](#ukazi)
-   - 2.2. [Ostali konstrukti](#ostali-konstrukti)
-     - 2.2.1. [Deklaracije](#deklaracije)
-     - 2.2.2. [Izrazi](#izrazi)
-     - 2.2.3. [Kontrola toka](#kontrola-toka)
-     - 2.2.4. [Procedure](#procedure)
-     - 2.2.5. [Metapodatki](#metapodatki)
-     - 2.2.6. [Povpraševanja](#povpraševanja)
-     - 2.2.7. [Transformacije](#transformacije)
+2. [Konstrukti](#konstrukti)
+   - 2.1 [Osnovni konstrukti](#osnovni-konstrukti)
+     - 2.1.1 [Enota](#enota)
+     - 2.1.2 [Realna števila](#realna-števila)
+     - 2.1.3 [Nizi](#nizi)
+     - 2.1.4 [Koordinate](#koordinate)
+     - 2.1.5 [Bloki](#bloki)
+     - 2.1.6 [Ukazi](#ukazi)
+   - 2.2 [Ostali konstrukti](#ostali-konstrukti)
+     - 2.2.1 [Deklaracije](#deklaracije)
+     - 2.2.2 [Izrazi](#izrazi)
+     - 2.2.3 [Kontrola toka](#kontrola-toka)
+     - 2.2.4 [Procedure](#procedure)
+     - 2.2.5 [Metapodatki](#metapodatki)
+     - 2.2.6 [Poizvedbe](#poizvedbe)
+     - 2.2.7 [Transformacije](#transformacije)
 3. [Gramatika](#gramatika)
-4. [First in Follow množice](#first-in-follow-množice)
-   - 4.1. [First množice](#first-množice)
-   - 4.2. [Follow množice](#follow-množice)
-5. [Testni primeri](#testni-primeri)
-
----
+4. [Testni primeri](#testni-primeri)
+5. [First in Follow množice](#first-in-follow-množice)
+   - 5.1 [First množice](#first-množice)
+   - 5.2 [Follow množice](#follow-množice)
 
 ## Uvod
 
-Jezik TriWave je domensko specifičen programski jezik, namenjen opisovanju in modeliranju mest. Omogoča definiranje različnih mestnih elementov kot so ceste, zgradbe, parki, reke, mostovi, restavracije, radijske postaje in seznami predvajanja.
+TriWave je domain-specific jezik (DSL) za opisovanje in vizualizacijo mest. Omogoča definiranje različnih elementov mesta kot so ceste, zgradbe, radijske postaje, playliste, parki, reke, mostovi in restavracije z geometrijskimi oblikami in metapodatki.
 
----
-
-## Konstrukti jezika
+## Konstrukti
 
 ### Osnovni konstrukti
+
+Naš jezik vsebuje naslednje konstrukte:
 
 #### Enota
 
@@ -78,221 +74,182 @@ Točke v prostoru (zemljepisna dolžina, zemljepisna širina). Prva komponenta j
 
 #### Bloki
 
-##### Blok city
+**Blok city** predstavlja mesto, ki ga opisujemo. Določen je z imenom mesta. Lahko vsebuje bloke za opis cest, zgradb, radijskih postaj, playlistov, parkov, rek ipd., oziroma vsebuje vse ostale bloke. Je glavni element v jeziku.
 
-Blok **city** predstavlja mesto, ki ga opisujemo. Določen je z imenom mesta. Lahko vsebuje bloke za opis cest, zgradb, radijskih postaj, seznamov predvajanja, parkov, rek ipd. Je glavni element v jeziku.
-
-**Sintaksa:**
 ```
 city "NAME" {
-    BLOKI
+    BLOCKS
 }
 ```
 
-**Primer:**
+Primer:
 ```
 city "Maribor" {
     // ostali_bloki
 }
 ```
 
-##### Blok road
+**Blok road** predstavlja cesto. Določen je z imenom ceste. Lahko vsebuje ukaze za izris, ki izrišejo črte.
 
-Blok **road** predstavlja cesto. Določen je z imenom ceste. Lahko vsebuje ukaze za izris, ki izrišejo črte.
-
-**Sintaksa:**
 ```
 road "NAME" {
-    UKAZI
+    COMMANDS
 }
 ```
 
-**Primer:**
+Primer:
 ```
 road "Bulevar kralja Aleksandra" {
     line((0,0),(5,0));
 }
 ```
 
-##### Blok building
+**Blok building** predstavlja zgradbo. Določen je z imenom zgradbe. Lahko vsebuje ukaze za izris, ki izrišejo obrobo zapolnjenega lika. Obroba lika mora biti zaključena, torej končna lokacija mora biti enaka prvi.
 
-Blok **building** predstavlja zgradbo. Določen je z imenom zgradbe. Lahko vsebuje ukaze za izris, ki izrišejo obrobo zapolnjenega lika. Obroba lika mora biti zaključena, torej končna lokacija mora biti enaka prvi.
-
-**Sintaksa:**
 ```
 building "NAME" {
-    UKAZI
+    COMMANDS
 }
 ```
 
-**Primer:**
+Primer:
 ```
 building "Občina" {
     box((1,2),(3,1));
 }
 ```
 
-##### Blok radio
+**Blok radio** predstavlja radijsko postajo. Določen je z imenom radijske postaje in koordinatami. Vsebuje metapodatke o tej radijski postaji.
 
-Blok **radio** predstavlja radijsko postajo. Določen je z imenom radijske postaje in koordinatami. Vsebuje metapodatke o tej radijski postaji.
-
-**Sintaksa:**
 ```
 radio "NAME" (X, Y) {
-    METAPODATKI
+    METADATA
 }
 ```
 
-**Primer:**
+Primer:
 ```
 radio "HIT FM" (4.5, 2.0) {
-    set("frequency", 101.1);
+    set("frequency",101.1);
     set("genre", "rock");
 }
 ```
 
-##### Blok playlist
+**Blok playlist** predstavlja seznam predvajanj. Določen je z imenom in koordinatami. Vsebuje metapodatke o tem seznamu predvajanj.
 
-Blok **playlist** predstavlja seznam predvajanja. Določen je z imenom in koordinatami. Vsebuje metapodatke o tem seznamu predvajanja.
-
-**Sintaksa:**
 ```
 playlist "NAME" (X, Y) {
-    METAPODATKI
+    METADATA
 }
 ```
 
-**Primer:**
+Primer:
 ```
-playlist "Priljubljeni" (5.2, 8.4) {
+playlist "Priljubljene" (5.2, 8.4) {
     add("Nisi ti za male stvari", "Željko Samardžić");
     add("Noč pod zvezdami", "Lexington");
-    set("mood", "prebujanje");
+    set("mood", "sproščujoče");
 }
 ```
 
-##### Blok river
+**Blok river** predstavlja reko. Določen je z imenom. Lahko vsebuje ukaze za izris, ki izrišejo črte.
 
-Blok **river** predstavlja reko. Določen je z imenom. Lahko vsebuje ukaze za izris, ki izrišejo črte.
-
-**Sintaksa:**
 ```
 river "NAME" {
-    UKAZI
+    COMMANDS
 }
 ```
 
-**Primer:**
+Primer:
 ```
 river "Ibar" {
     line((0,0),(5,0));
 }
 ```
 
-##### Blok park
+**Blok park** predstavlja park. Določen je z imenom. Lahko vsebuje ukaze za izris, ki izrišejo obrobo zapolnjenega lika. Obroba lika mora biti zaključena, torej končna lokacija mora biti enaka prvi.
 
-Blok **park** predstavlja park. Določen je z imenom. Lahko vsebuje ukaze za izris, ki izrišejo obrobo zapolnjenega lika. Obroba lika mora biti zaključena, torej končna lokacija mora biti enaka prvi.
-
-**Sintaksa:**
 ```
 park "NAME" {
-    UKAZI
+    COMMANDS
 }
 ```
 
-**Primer:**
+Primer:
 ```
-park "Mestni park" {
+park "Narodnji" {
     box((5,6),(2,1));
 }
 ```
 
-##### Blok bridge
+**Blok bridge** predstavlja most. Določen je z imenom. Lahko vsebuje ukaze za izris, ki izrišejo črte.
 
-Blok **bridge** predstavlja most. Določen je z imenom. Lahko vsebuje ukaze za izris, ki izrišejo črte.
-
-**Sintaksa:**
 ```
 bridge "NAME" {
-    UKAZI
+    COMMANDS
 }
 ```
 
-**Primer:**
+Primer:
 ```
 bridge "Ibarski most" {
     line((0,4),(5,0));
 }
 ```
 
-##### Blok restaurant
+**Blok restaurant** predstavlja restavracijo. Določen je z imenom in koordinatami.
 
-Blok **restaurant** predstavlja restavracijo. Določen je z imenom in koordinatami.
-
-**Sintaksa:**
 ```
 restaurant "NAME" (X, Y);
 ```
 
-**Primer:**
+Primer:
 ```
-restaurant "Mali Leskovac" (6.4, 8.9);
+restaurant "Mali Leskovac" (6.4, 8.9)
 ```
 
 #### Ukazi
 
-##### Ukaz line
+**Ukaz line** nariše daljico med dvema točkama.
 
-Ukaz **line** nariše daljico med dvema točkama.
-
-**Sintaksa:**
 ```
-line(TOČKA, TOČKA)
+line(POINT, POINT)
 ```
 
-**Primer:**
+Primer:
 ```
 line((1.5,2.0), (4.0, 2.5))
 ```
 
-##### Ukaz bend
+**Ukaz bend** nariše krivuljo med dvema točkama z danim kotom. Če je kot 0° se izriše ravna črta, če je kot 45° se izriše približek četrtine krožnice. Pozitivni koti pomenijo, da je krivulja nagnjena v levo, negativni koti pa pomenijo, da je krivulja nagnjena v desno.
 
-Ukaz **bend** nariše krivuljo med dvema točkama z danim kotom. Če je kot 0° se izriše ravna črta, če je kot 45° se izriše približek četrtine krožnice. Pozitivni koti pomenijo, da je krivulja nagnjena v levo, negativni koti pa pomenijo, da je krivulja nagnjena v desno.
-
-**Sintaksa:**
 ```
-bend(TOČKA, TOČKA, KOT)
+bend(POINT, POINT, ANGLE)
 ```
 
-**Primer:**
+Primer:
 ```
 bend((2, 2), (3, 3), 45)
 ```
 
-##### Ukaz box
+**Ukaz box** izriše pravokotnik med podanima lokacijama. Prva lokacija je zgornji levi kot pravokotnika, druga lokacija pa je spodnji desni kot.
 
-Ukaz **box** izriše pravokotnik med podanima lokacijama. Prva lokacija je zgornji levi kot pravokotnika, druga lokacija pa je spodnji desni kot.
-
-**Sintaksa:**
 ```
-box(TOČKA, TOČKA)
+box(POINT, POINT)
 ```
 
-**Primer:**
+Primer:
 ```
 box((1, 1), (3, 2))
 ```
 
-##### Ukaz circ
+**Ukaz circ** izriše krog z izbranim polmerom na podani lokaciji. Ta lokacija predstavlja center kroga.
 
-Ukaz **circ** izriše krog z izbranim polmerom na podani lokaciji. Ta lokacija predstavlja center kroga.
-
-**Sintaksa:**
 ```
-circ(TOČKA, POLMER)
+circ(POINT, RADIUS)
 ```
 
-**Primer:**
+Primer:
 ```
 circ((5, 5), 1.2)
 ```
@@ -305,28 +262,31 @@ Deklaracije se uporabljajo za definiranje spremenljivk, konstant, točk in izraz
 
 Spremenljivke lahko vsebujejo: številke, koordinate, izraze...
 
-**Primer:**
+Primer:
 ```
 let p = (2, 2);
-let polmer = 1.5;
+let radius = 1.5;
 line(p, (4, 4));
-circ(p, polmer);
+circ(p, radius);
 ```
 
 #### Izrazi
 
-- **fst(p)** -- vrne prvo komponento točke p
-- **snd(p)** -- vrne drugo komponento točke p
-- **+, -, *, /** -- standardne aritmetične operacije
-- **lambda(x) { ... }** -- anonimna funkcija
+**fst(p)** -- vrne prvo komponento točke p
 
-**Primer:**
+**snd(p)** -- vrne drugo komponento točke p
+
+**+, -, *, /** -- standardne aritmetične operacije
+
+**lambda(x) { ... }** -- anonimna funkcija
+
+Primer:
 ```
 let s = (2, 3);
 let p = (fst(s) + 1, snd(s) * 2); // => (3, 6)
 ```
 
-**Primer lambda funkcije:**
+Primer lambda funkcije:
 ```
 let kvadrat = lambda(x) { x * x };
 let vrednost = kvadrat(3); // 9
@@ -334,11 +294,11 @@ let vrednost = kvadrat(3); // 9
 
 #### Kontrola toka
 
-##### If ... else
+**If ... else**
 
 Pogojno vejanje, odvisno od izraza.
 
-**Primer:**
+Primer:
 ```
 if n > 1 {
     line((1, 1), (2, 2));
@@ -347,25 +307,25 @@ if n > 1 {
 }
 ```
 
-##### For zanka
+**for i = a to b**
 
 Zanka, ki izvede blok for i od a do b (vključno).
 
-**Primer:**
+Primer:
 ```
 for i = 1 to 3 {
     box((i, 0), (i + 1, 1));
 }
 ```
 
-##### Foreach zanka
+**foreach x in lista**
 
-Iteracija skozi elemente seznama.
+Iteracija skozi elemente liste.
 
-**Primer:**
+Primer:
 ```
-let seznam = [1, 2, 3];
-foreach x in seznam {
+let lista = [1, 2, 3];
+foreach x in lista {
     circ((x, 0), 0.5);
 }
 ```
@@ -374,7 +334,7 @@ foreach x in seznam {
 
 Uporabljajo se za abstrahiranje ponovljivih vzorcev, kot je risanje ponavljajočih se elementov. Definira imenovano funkcijo s parametrom.
 
-**Primer:**
+Primer:
 ```
 procedure nadstropje(p) {
     box(p, (fst(p)+2, snd(p)+1));
@@ -385,7 +345,7 @@ procedure nadstropje(p) {
 
 Omogoča dodajanje poljubnih lastnosti kateremu koli objektu.
 
-**Primer:**
+Primer:
 ```
 radio "B92" (2, 2) {
     set("frequency", 92.5);
@@ -393,13 +353,13 @@ radio "B92" (2, 2) {
 }
 ```
 
-#### Povpraševanja
+#### Poizvedbe
 
 Uporabljajo se za prostorske poizvedbe, kot je iskanje bližnjih elementov.
 
-**Primer:**
+Primer:
 ```
-let r = neigh((5, 5), 2); // elementi v polmeru 2
+let r = neigh((5, 5), 2); // elementi v radiju 2
 foreach x in r {
     highlight x;
 }
@@ -409,15 +369,13 @@ foreach x in r {
 
 Spremeni referenčni koordinatni sistem -- uporablja se za relativno pozicioniranje.
 
-**Primer:**
+Primer:
 ```
 translate (10, 5);
 building "Relativna zgradba" {
     box((0, 0), (2, 2));
 }
 ```
-
----
 
 ## Gramatika
 
@@ -478,8 +436,8 @@ Term ::= Factor Term'
 
 Term' ::= * Factor Term' | / Factor Term' | Ɛ
 
-Factor ::= NUMBER | STRING | ID | fst (Expr) | snd (Expr) | (Expr) |
-           lambda (ID) {Expr}
+Factor ::= NUMBER | STRING | ID | fst (Expr) | snd (Expr) | (Expr)
+           | lambda (ID) {Expr}
 
 IfStatement ::= if Expr {StatementList } ElsePart
 
@@ -492,7 +450,190 @@ ForeachStatement ::= foreach ID in ID {StatementList}
 ProcDecl ::= procedure ID (ID) {StatementList}
 ```
 
----
+## Testni primeri
+
+### Primer 1:
+```
+city "Gradič" {
+    road "Ulica" {
+        line((1,0), (2,3));
+    }
+    
+    road "Potka" {
+        line((2,3), (3,4));
+    }
+    
+    building "Zgradba" {
+        box ((3, 1), (5, 4));
+    }
+    
+    building "Hiša" {
+        box((5,7), (2,3));
+    }
+}
+```
+
+### Primer 2:
+```
+city "Radio" {
+    road "Glavna" {
+        line ((0, 0), (10, 0));
+    }
+    
+    radio "RadioCenter" (5, 5) {
+        set ("volume", 7);
+        set ("frequency", 101.2);
+    }
+    
+    building "Zgradba" {
+        box ((4, 1), (5, 4));
+    }
+}
+```
+
+### Primer 3:
+```
+city "Reka" {
+    river "Rečica" {
+        bend ((0, 0), (5, 5), 45);
+    }
+    
+    bridge "Most" {
+        line ((1,5), (4,0));
+    }
+    
+    restaurant "Picerija" (3, 3);
+    restaurant "Slaščičarna" (4, 4);
+    
+    building "Zgradba" {
+        box ((6, 3), (7, 4));
+    }
+    
+    building "Zgradba2" {
+        box ((8, 8), (9, 9));
+    }
+    
+    road "Pot" {
+        line ((3, 2), (5, 8));
+    }
+}
+```
+
+### Primer 4:
+```
+city "Zanka" {
+    let n = 3;
+    
+    for i = 1 to n {
+        building "Zgradba" {
+            box ((i * 3, 1), (i * 3 + 2, 4));
+        }
+    }
+    
+    road "Potka" {
+        line ((0, 2), (3, 2));
+    }
+}
+```
+
+### Primer 5:
+```
+city "IF" {
+    let n = 3;
+    
+    for i = 1 to n {
+        building "Zgradba" {
+            box ((i * 3, 1), (i * 3 + 2, 4));
+        }
+        
+        if i == 2 {
+            park "MaliParkič" {
+                box ((i * 3 + 2, 1), (i * 3 + 4, 3));
+            }
+        }
+    }
+    
+    restaurant "Picerija" (7, 7);
+}
+```
+
+### Primer 6:
+```
+city "gradič"{
+    let count = 5;
+    
+    for i = 1 to count {
+        building "Zgradba" {
+            box ((i * 3, 1), (i * 3 + 2, 4));
+        }
+    }
+    
+    restaurant "Picerija" (7, 7);
+}
+```
+
+### Primer 7:
+```
+city "Glasba" {
+    radio "HITFM" (3, 4) {
+        set ("frequency", 102.3);
+        set ("genre", "jazz");
+    }
+    
+    playlist "VečerniMix" (7, 9) {
+        add ("songOne", "artistOne");
+        add ("songTwo", "artistTwo");
+        set ("shuffle", 1);
+    }
+}
+```
+
+### Primer 8:
+```
+city "Bloki" {
+    park "CentralniPark" {
+        box ((0, 0), (10, 10));
+    }
+    
+    river "ZelenaReka" {
+        line ((1, 1), (25, 1));
+    }
+    
+    bridge "KamnitiMost" {
+        box ((12, -5), (18, 5));
+    }
+    
+    restaurant "PastaPlace" (10, 20);
+}
+```
+
+### Primer 9:
+```
+city "Primer" {
+    road "JavorovaUlica" {
+        bend ((15, 0), (15, 5), 20);
+    }
+    
+    park "ZeleniPark" {
+        circ ((25, 25), 12);
+    }
+}
+```
+
+### Primer 10:
+```
+city "PrimerMesto" {
+    road "HrastovaAvenija" {
+        line ((0, 0), (40, 0));
+    }
+    
+    park "SončniPark" {
+        box ((15, 15), (35, 35));
+    }
+    
+    restaurant "HranjiKotiček" (22, 18);
+}
+```
 
 ## First in Follow množice
 
@@ -502,7 +643,7 @@ ProcDecl ::= procedure ID (ID) {StatementList}
 First(Program) = { city }
 First(CityDecl) = { city }
 First(CityElementList) = { ID, bridge, building, for, if, let, park, playlist, radio, restaurant, river, road, Ɛ }
-First(CityElement) = { bridge, building, for, if, let, park, playlist, radio, restaurant, river, road }
+First(CityElement) = { ID, bridge, building, for, if, let, park, playlist, radio, restaurant, river, road }
 First(StatementList) = { ID, for, if, let, Ɛ }
 First(Statement) = { ID, for, if, let }
 First(RoadDecl) = { road }
@@ -516,7 +657,7 @@ First(RestaurantDecl) = { restaurant }
 First(CommandList) = { bend, box, circ, line, Ɛ }
 First(Command) = { bend, box, circ, line }
 First(PlaylistBody) = { add, set, Ɛ }
-First(PlaylistEntry) = { add, set }
+First(PlaylistEntry) = {add, set}
 First(MetadataList) = { set, Ɛ }
 First(SetCommand) = { set }
 First(LetDecl) = { let }
@@ -572,201 +713,4 @@ Follow(Factor) = { !=, ), *, +, ,, -, /, ;, <, <=, ==, >, >=, to, { }
 Follow(IfStatement) = { ID, bridge, building, for, if, let, park, playlist, radio, restaurant, river, road, } }
 Follow(ElsePart) = { ID, bridge, building, for, if, let, park, playlist, radio, restaurant, river, road, } }
 Follow(ForStatement) = { ID, bridge, building, for, if, let, park, playlist, radio, restaurant, river, road, } }
-```
-
----
-
-## Testni primeri
-
-### Primer 1: Osnovno mesto z cestami in zgradbami
-
-```
-city "Mestece" {
-    road "Ulica" {
-        line((1,0), (2,3));
-    }
-    
-    road "Potka" {
-        line((2,3), (3,4));
-    }
-    
-    building "Zgradba" {
-        box ((3, 1), (5, 4));
-    }
-    
-    building "Hiša" {
-        box((5,7), (2,3));
-    }
-}
-```
-
-### Primer 2: Mesto z radijsko postajo
-
-```
-city "Radio" {
-    road "Glavna" {
-        line ((0, 0), (10, 0));
-    }
-    
-    radio "RadioCenter" (5, 5) {
-        set ("volume", 7);
-        set ("frequency", 101.2);
-    }
-    
-    building "Zgradba" {
-        box ((4, 1), (5, 4));
-    }
-}
-```
-
-### Primer 3: Mesto z reko in mostom
-
-```
-city "Reka" {
-    river "Rečica" {
-        bend ((0, 0), (5, 5), 45);
-    }
-    
-    bridge "Most" {
-        line ((1,5), (4,0));
-    }
-    
-    restaurant "Picerija" (3, 3);
-    restaurant "Slaščičarna" (4, 4);
-    
-    building "Zgradba" {
-        box ((6, 3), (7, 4));
-    }
-    
-    building "Zgradba2" {
-        box ((8, 8), (9, 9));
-    }
-    
-    road "Pot" {
-        line ((3, 2), (5, 8));
-    }
-}
-```
-
-### Primer 4: Uporaba zanke
-
-```
-city "Zanka" {
-    let n = 3;
-    
-    for i = 1 to n {
-        building "Zgradba" {
-            box ((i * 3, 1), (i * 3 + 2, 4));
-        }
-    }
-    
-    road "Potka" {
-        line ((0, 2), (3, 2));
-    }
-}
-```
-
-### Primer 5: Pogojno vejanje
-
-```
-city "Pogoj" {
-    let n = 3;
-    
-    for i = 1 to n {
-        building "Zgradba" {
-            box ((i * 3, 1), (i * 3 + 2, 4));
-        }
-        
-        if i == 2 {
-            park "MaliPark" {
-                box ((i * 3 + 2, 1), (i * 3 + 4, 3));
-            }
-        }
-    }
-    
-    restaurant "Picerija" (7, 7);
-}
-```
-
-### Primer 6: Spremenljivke in zanke
-
-```
-city "mestece" {
-    let count = 5;
-    
-    for i = 1 to count {
-        building "Zgradba" {
-            box ((i * 3, 1), (i * 3 + 2, 4));
-        }
-    }
-    
-    restaurant "Picerija" (7, 7);
-}
-```
-
-### Primer 7: Glasba in seznami predvajanja
-
-```
-city "Glasba" {
-    radio "HITFM" (3, 4) {
-        set ("frequency", 102.3);
-        set ("genre", "jazz");
-    }
-    
-    playlist "VečerniMiks" (7, 9) {
-        add ("pesemEna", "izvajalecEna");
-        add ("pesemDva", "izvajalecDva");
-        set ("naključno", 1);
-    }
-}
-```
-
-### Primer 8: Parki in naravni elementi
-
-```
-city "Bloki" {
-    park "CentralniPark" {
-        box ((0, 0), (10, 10));
-    }
-    
-    river "ZelenaReka" {
-        line ((1, 1), (25, 1));
-    }
-    
-    bridge "KameniMost" {
-        box ((12, -5), (18, 5));
-    }
-    
-    restaurant "TestenineKraj" (10, 20);
-}
-```
-
-### Primer 9: Krivulje in krogi
-
-```
-city "Primer" {
-    road "JavorjevoNasipje" {
-        bend ((15, 0), (15, 5), 20);
-    }
-    
-    park "ZeleniPark" {
-        circ ((25, 25), 12);
-    }
-}
-```
-
-### Primer 10: Kompleksnejši primer
-
-```
-city "PrimerMesta" {
-    road "HrastovaCesta" {
-        line ((0, 0), (40, 0));
-    }
-    
-    park "SončniPark" {
-        box ((15, 15), (35, 35));
-    }
-    
-    restaurant "HranaKot" (22, 18);
-}
 ```
