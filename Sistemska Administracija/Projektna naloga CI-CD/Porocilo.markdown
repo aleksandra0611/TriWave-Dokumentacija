@@ -427,24 +427,13 @@ Webhook strežnik smo implementirali na Azure VM (`TriWaveVM`) z uporabo Python 
   ```bash
   sudo nano /etc/environment
   ```
-  - Vsebina:
-    ```
-    MONGODB_URI=mongodb+srv://user:pass@cluster0.mongodb.net/spletno
-    JWT_SECRET=myjwtsecret123
-    JWT_EXPIRY=1h
-    SESSION_SECRET=mysessionsecret456
-    SPOTIFY_CLIENT_ID=abc123xyz789
-    SPOTIFY_CLIENT_SECRET=def456uvw012
-    SPOTIFY_REDIRECT_URI=http://104.40.152.85:5000/callback
-    ```
-  - **Pojasnilo**:
-    - Zgornji podatki niso resnični.
-    - `MONGODB_URI`: Povezava do MongoDB Atlas baze.
-    - `JWT_SECRET`, `JWT_EXPIRY`: Za JWT avtentikacijo v backendu.
-    - `SESSION_SECRET`: Za seje v backendu.
-    - `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIFY_REDIRECT_URI`: Za Spotify API integracijo.
+- **Vsebina**
+  - `MONGODB_URI`: Povezava do MongoDB Atlas baze.
+  - `JWT_SECRET`, `JWT_EXPIRY`: Za JWT avtentikacijo v backendu.
+  - `SESSION_SECRET`: Za seje v backendu.
+  - `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIFY_REDIRECT_URI`: Za Spotify API integracijo.
     - Shranjene v `/etc/environment` za sistemsko dostopnost.
-  - **Varnost**:
+- **Varnost**:
     ```bash
     history -c && echo '' > ~/.bash_history
     ```
